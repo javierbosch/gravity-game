@@ -37,11 +37,12 @@ class Planet {
 
 	collided_body(other,another){
         this.mass = other.mass + another.mass;
-        this.x    = (other.x*other.mass + another.x*another.mass)/this.mass;
-        this.y    = (other.y*other.mass + another.y*another.mass)/this.mass;
-        this.radius = Math.floor(Math.pow(((3/4)*this.mass)/Math.PI,1/3));
+        this.x    = Math.floor((other.x*other.mass + another.x*another.mass)/this.mass);
+        this.y    = Math.floor((other.y*other.mass + another.y*another.mass)/this.mass);
+        this.r = Math.floor(Math.pow(((3/4)*this.mass)/Math.PI,1/3));
         this.dx = 0;
         this.dy = 0;
+        console.log(this);
     }
 
     draw(){
@@ -88,6 +89,8 @@ var planets = [];
 
 var test1 = new Planet(500,200,50,-3,3,ctx);
 var test2 = new Planet(200,50,30,2,3,ctx);
+var test3 = (new Planet(0,0,0,0,0,ctx)).collided_body(test1,test2);
+
 
 planets.push(test1);
 planets.push(test2);
@@ -124,10 +127,16 @@ function collisions(){
     planets.pairs(function(pair){
         if (pair[0]==null){}
         else if(pair[0].collision(pair[1])){
-            var temp = new Planet (0,0,0,0,0,ctx);
-            temp.collided_body(pair[0], pair[1]);
-            console.log(temp);
-            planets.push(temp);
+            //var temp = new Planet (0,0,0,0,0,pair[1].ctx);
+            //temp.collided_body(pair[0], pair[1]);
+            //console.log(temp);
+            //planets.push(temp);
+            var bro =new Planet(500,200,50,-3,3,ctx);
+            planets.push(bro);
+            console.log(bro);
+            planets.push(new Planet(500,200,50,-3,3,ctx).collided_body(pair[0], pair[1]));
+
+
             delete planets[planets.indexOf(pair[0])];
             delete planets[planets.indexOf(pair[1])];
         }
@@ -138,7 +147,6 @@ function stepper(){
     ctx.clearRect(0, 0, c.width, c.height);
     for (planet of planets){
         if (planet != null){
-            console.log(planet);
             planet.step();
         }
     }
