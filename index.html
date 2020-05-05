@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Gravity simulation</title>
-</head>
-<body onload="startGame()">
-    <canvas id="myCanvas" width="800" height="500" style="border:1px solid #d3d3d3;">
-        Your browser does not support the HTML5 canvas tag.</canvas>
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
-
-</body>
-<script src="main.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Gravity simulation</title>
+    </head>
+    <body id="body" onload="" onresize="canvas_resize()">
+        <canvas onmousedown="mouse_down(event)" onmouseup="mouse_up(event)" onmouseout="mouse_up(event)" id="canvas">
+            Your browser does not support the HTML5 canvas tag.</canvas>
+    </body>
+    <script src="main.js"></script>
 </html> 
