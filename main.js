@@ -132,9 +132,6 @@ canvas_resize();
 
 var planets = [];
 
-planets.push(new Planet (100,300,50,0,0,control_hover,ctx));
-planets.push(new Planet (600,200,60,0,0,control_hover,ctx))
-
 function create_planet(event){
     var x = event.clientX;
     var y = event.clientY;
