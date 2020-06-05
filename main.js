@@ -30,7 +30,7 @@ class Planet {
                 result = -result;
             }
         }
-        if (axis=="y"){
+        else if (axis=="y"){
             result = this.mass * Math.pow(this.dy,2)/2;
             if (this.dy<0){
                 result = -result;
@@ -80,6 +80,13 @@ class Planet {
             this.dy = - this.dy;
         }
         this.mass      = total_mass;
+        
+        this.forcesX=0;
+        this.forcesY=0;
+        if(other.fixed){
+            this.fixed=true;
+            this.color = "#FA431D";
+        }
     }
 
     draw(){
@@ -109,14 +116,6 @@ class Planet {
     }
 }
 
-Array.prototype.pairs = function (func) {
-    for (var i = 0; i < this.length - 1; i++) {
-        for (var j = i; j < this.length - 1; j++) {
-            func([this[i], this[j+1]]);
-        }
-    }
-}
-
 
 var c   = document.getElementById("canvas");
 var ctx = c.getContext("2d");
@@ -133,11 +132,15 @@ canvas_resize();
 
 var planets = [];
 
+planets.push(new Planet (100,300,50,0,0,control_hover,ctx));
+planets.push(new Planet (600,200,60,0,0,control_hover,ctx))
+
 function create_planet(event){
     var x = event.clientX;
     var y = event.clientY;
     planets.push(new Planet (x,y,10,0,0,control_hover,ctx));
 }
+
 
 var mousedownID = -1;
 
@@ -163,6 +166,7 @@ function whilemousedown() {
     }
     else{
         planets[planets.length-1].enlarge();
+        console.log("juian")
     }
 }
 
@@ -181,33 +185,6 @@ function key_down(event){
     }
 }
 
-function collisions(){
-    planets.pairs(function(pair){
-        add_forces(planets[planets.indexOf(pair[0])],planets[planets.indexOf(pair[1])]);
-        if (pair[0]==null){}
-        else if(pair[0].collision(pair[1])){
-            planets[planets.indexOf(pair[0])].collided_body(pair[1]);
-            delete planets[planets.indexOf(pair[1])];
-        }
-    });
-}
-
-function add_forces(body1,body2){
-    if((body1!=null)&&(body2!=null)){
-        var dx = body2.x - body1.x;
-        var dy = body2.y - body1.y;
-        var r_squared = dx*dx + dy*dy;
-        var r = Math.sqrt(r_squared);
-        var force_magnitude = (G * body1.mass * body2.mass) / r_squared;
-        var dx_normalized_scaled = (dx / r) * force_magnitude;
-        var dy_normalized_scaled = (dy / r) * force_magnitude;
-        body1.forcesX += dx_normalized_scaled;
-        body1.forcesY += dy_normalized_scaled;
-        body2.forcesX -= dx_normalized_scaled;
-        body2.forcesY -= dy_normalized_scaled;    
-    }
-}
-
 function stepper(){
     ctx.clearRect(0, 0, c.width, c.height);
     for (planet of planets){
@@ -217,9 +194,41 @@ function stepper(){
     }
 }
 
+function calculate_forces(){
+    for(i=0; i<planets.length;i++){
+        if(planets[i]!=null){
+            for(j=0; j<planets.length;j++){
+                if((planets[j]!=null)&&(planets[i]!==planets[j])){
+                    var dx = planets[j].x - planets[i].x;
+                    var dy = planets[j].y - planets[i].y;
+                    var r_squared = dx*dx + dy*dy;
+                    var r = Math.sqrt(r_squared);
+                    var force_magnitude = (G * planets[i].mass * planets[j].mass) / r_squared;
+                    var dx_normalized_scaled = (dx / r) * force_magnitude;
+                    var dy_normalized_scaled = (dy / r) * force_magnitude;
+                    planets[i].forcesX += dx_normalized_scaled;
+                    planets[i].forcesY += dy_normalized_scaled;    
+
+                    if(planets[i].collision(planets[j])){
+                        console.log(planets[i]);
+                        console.log(planets[j]);
+                        planets[i].collided_body(planets[j]);
+                        delete planets[j];
+                        console.log(planets[i]);
+                    }
+                
+           
+                }
+            }
+        }
+    }
+}
+    
+
+
 function main_loop() {
     setInterval(function(){ 
-        collisions();
+        calculate_forces();
         stepper();
     }, 33);
 }

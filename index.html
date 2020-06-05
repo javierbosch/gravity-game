@@ -5,8 +5,8 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <title>Gravity simulation</title>
     </head>
-    <body id="body" onload="" onresize="canvas_resize()">
-        <canvas onmousedown="mouse_down(event)" onmouseup="mouse_up(event)" onmouseout="mouse_up(event)" id="canvas">
+    <body id="body" onload="" onresize="canvas_resize()" onkeydown="key_down(event)" onkeyup="key_up(event)" >
+        <canvas onmousedown="mouse_down(event)" onmouseup="mouse_up(event)" onmouseout="mouse_up(event)"  id="canvas">
             Your browser does not support the HTML5 canvas tag.</canvas>
     </body>
     <script src="main.js"></script>
