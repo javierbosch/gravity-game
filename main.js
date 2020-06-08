@@ -2,6 +2,9 @@ const velocity_scale = 0.03;
 const G              = 0.005;
 const restart_key    = 82;
 const control_key    = 17;
+const generation_key = 65;
+const multiple_generation_key = 71;
+
 
 class Planet {
     constructor(x, y, r, dx, dy, fixed, ctx) {
@@ -138,6 +141,19 @@ function create_planet(event){
     planets.push(new Planet (x,y,10,0,0,control_hover,ctx));
 }
 
+function create_random_planet(){
+    console.log("juian")
+    x = Math.floor(Math.random() * c.width);
+    y = Math.floor(Math.random() * c.height);
+    size = Math.floor((Math.random()* 7) + 3);
+    planets.push(new Planet (x,y,size,0,0,false,ctx));
+}
+
+function generate_planets(amount){
+    for(i=0;i<amount;i++){
+        create_random_planet();
+    }
+}
 
 var mousedownID = -1;
 
@@ -163,7 +179,6 @@ function whilemousedown() {
     }
     else{
         planets[planets.length-1].enlarge();
-        console.log("juian")
     }
 }
 
@@ -173,6 +188,12 @@ function key_up(event){
     }
     if (event.keyCode==control_key){
         control_hover = false;
+    }
+    if (event.keyCode==generation_key){
+        create_random_planet();
+    }
+    if (event.keyCode==multiple_generation_key){
+        generate_planets(400);
     }
 }
 
