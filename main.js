@@ -231,7 +231,7 @@ function calculate_forces(){
                         console.log(planets[i]);
                         console.log(planets[j]);
                         planets[i].collided_body(planets[j]);
-                        delete planets[j];
+                        planets = planets.slice(0, j).concat(planets.slice(j + 1, planets.length));
                         console.log(planets[i]);
                     }
                 
