@@ -2,8 +2,8 @@ const velocity_scale = 0.03;
 const G              = 0.005;
 const restart_key    = 82;
 const control_key    = 17;
-const generation_key = 65;
-const multiple_generation_key = 71;
+const generation_key = 71;
+const multiple_generation_key = 65;
 
 
 class Planet {
