@@ -15,7 +15,7 @@ class Planet {
         if (this.fixed){
             this.color = "#FA431D";
         }else{
-            this.color = "#1BB5F8";
+            this.color = "#CB64E8";
         }
         this.mass = (4/3) * Math.PI * Math.pow(r,3); 
         this.dx = dx;
